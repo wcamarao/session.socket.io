@@ -7,7 +7,8 @@ It's written and tested using express 3.0.0rc4, connect 2.4.5 and socket.io 0.9.
 
 ## Installation
 
-    $ npm install session.socket.io
+    $ cd path_to/your_project/node_modules
+    $ git clone git://github.com/functioncallback/session.socket.io.git
 
 ## Usage
 
