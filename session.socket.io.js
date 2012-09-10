@@ -1,10 +1,9 @@
-module.exports = function(io, sessionStore, cookieParser, key, handshake) {
+module.exports = function(io, sessionStore, cookieParser, key) {
   key = key || 'connect.sid';
-  handshake = handshake || {};
 
   this.on = function(event, callback) {
     io.sockets.on(event, function (socket) {
-      cookieParser(socket.handshake, handshake, function (parseErr) {
+      cookieParser(socket.handshake, {}, function (parseErr) {
         sessionStore.get(findCookie(socket.handshake), function (storeErr, session) {
           callback(parseErr || storeErr, socket, session);
         });
