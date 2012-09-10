@@ -1,0 +1,29 @@
+{
+  "name": "session.socket.io",
+  "version": "0.1.0",
+  "description": "Connect middleware sessions in socket.io",
+  "author": "Wagner Camarao <functioncallback@gmail.com>",
+
+  "contributors": [ 
+    {
+      "name": "Wagner Camarao",
+      "email": "functioncallback@gmail.com"
+    } 
+  ],
+
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/functioncallback/session.socket.io.git"
+  },
+
+  "engine": {
+    "node": ">=0.6"
+  },
+
+  "dependencies" : {},
+  "devDependencies": {},
+
+  "scripts": {
+    "test": "make test"
+  }
+}
