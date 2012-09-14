@@ -23,9 +23,5 @@
   "dependencies" : {},
   "devDependencies": {},
 
-  "scripts": {
-    "test": "make test"
-  },
-
   "main": "./session.socket.io.js"
 }
