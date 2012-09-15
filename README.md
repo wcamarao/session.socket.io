@@ -7,8 +7,7 @@ It's written and tested using express 3.0.0rc4, connect 2.4.5 and socket.io 0.9.
 
 ## Installation
 
-    $ cd path_to/your_project/node_modules
-    $ git clone git://github.com/functioncallback/session.socket.io.git
+    $ npm install session.socket.io
 
 ## Usage
 
@@ -19,7 +18,7 @@ var SessionSockets = require('session.socket.io')
   , sessionSockets = new SessionSockets(io, sessionStore, cookieParser);
 ```
 
-If you're not familiar with or not sure about the required parameters above (io, sessionStore and cookieParser) you can skip this and go to the more detailed example below.
+If you're not familiar with or not sure about the required parameters above (io, sessionStore and cookieParser), check the more detailed example below.
 
 ### Listen to socket connections and get the session together
 
@@ -91,13 +90,17 @@ new SessionSockets(io, sessionStore, cookieParser, 'yourOwnSessionStoreKey');
 
 It defaults to 'connect.sid' (which is the default for both connect and express).
 
+## Cookie lookup
+
+When looking up for the cookie in a socket.handshake, SessionSockets will take precedence on the following order: secureCookies, signedCookies, cookies.
+
 ## Troubleshooting
 
 The cookieParser doesn't need to be the same reference, you can create another instance somewhere else, but it _should_ take the same 'secret', otherwise the cookie id won't be decoded, therefore the session data won't be retrieved.
 
 The sessionStore _must_ be the same instance. It's quite obvious why.
 
-You can always debug the cookies and session data from any socket.handshake. The socket is the same as provided by socket.io and contains all of that information.
+You can always debug the cookies and session data from any socket.handshake. The socket is the same _as provided by socket.io_ and contains all of that information.
 
 ## License
 
