@@ -1,7 +1,7 @@
 session.socket.io (SessionSockets)
 ==================================
 
-This node.js module aims to simplify your socket.io code to access express or connect middleware sessions. It has no dependencies and can be initialized using any session store and cookie parser compatible with express or connect.
+This tiny node module aims to simplify your socket.io application when using http sessions from express or connect middlewares. It has no dependencies and can be initialized using any session store and cookie parser compatible with express or connect.
 
 It's written and tested using express 3.0.0rc4, connect 2.4.5 and socket.io 0.9.10.
 
@@ -9,7 +9,7 @@ It's written and tested using express 3.0.0rc4, connect 2.4.5 and socket.io 0.9.
 
     $ npm install session.socket.io
 
-## Usage
+## Quick Start
 
 Import the module and initialize it providing the required parameters
 
@@ -18,13 +18,12 @@ var SessionSockets = require('session.socket.io')
   , sessionSockets = new SessionSockets(io, sessionStore, cookieParser);
 ```
 
-If you're not familiar with or not sure about the required parameters above (io, sessionStore and cookieParser), check the more detailed example below.
-
-### Listen to socket connections and get the session together
+Listen to socket connections and get the socket _as provided by socket.io_, together with either the session or an error
 
 ```js
 sessionSockets.on('connection', function (err, socket, session) {
   //your regular socket.io code goes here
+  //and you can still use your io object
 });
 ```
 
@@ -33,18 +32,18 @@ sessionSockets.on('connection', function (err, socket, session) {
 ```js
 var http = require('http')
   , connect = require('connect')
-  , express = require('express');
+  , express = require('express')
+  , app = express();
 ```
 
-Below are the two main references you will need to keep, the cookieParser and the sessionStore
+Below are the two main references you will need to keep
 
 ```js
-var app = express()
-  , cookieParser = express.cookieParser('your secret sauce')
+var cookieParser = express.cookieParser('your secret sauce')
   , sessionStore = new connect.middleware.session.MemoryStore();
 ```
 
-Both will be used by express - so far everything's very familiar, except that you need to specify the sessionStore to the express.session(). Here you could use Redis or any other store as well.
+Both will be used by express - so far everything's familiar, except that you need to provide sessionStore when using express.session(). Here you could use Redis or any other store as well.
 
 ```js
 app.configure(function () {
@@ -61,7 +60,7 @@ var server = http.createServer(app)
   , io = require('socket.io').listen(server);
 ```
 
-Now instead of listening to io.sockets.on('connection', ...) you will pass it together with the sessionStore and cookieParser to the SessionSockets
+Now instead of listening to io.sockets.on('connection', ...) you will pass it together with the sessionStore and cookieParser
 
 ```js
 var SessionSockets = require('session.socket.io')
@@ -73,14 +72,15 @@ Which will use it all together to get you what matters
 ```js
 sessionSockets.on('connection', function (err, socket, session) {
   //your regular socket.io code goes here
+  //and you can still use your io object
 });
 ```
 
 ## Error handling
 
-Note that now you receive 3 parameters in the connection callback (err, socket, session). The first will be an error (if an error occurs) from either the cookie parser (when trying to parse the cookie id) or from the session store (when trying to lookup the session data by key). The second will be the socket _as provided by socket.io_; and the third (if no error has ocurred) will be the corresponding user session for that socket connection.
+Note that now you receive 3 parameters in the connection callback (err, socket, session). The first will be an error (if an error has occured) from either the cookie parser (when trying to parse the cookie) or the session store (when trying to lookup the session by key); the second will _always be the socket as provided by socket.io_; and the third (if no error has ocurred) will be the corresponding user session for that socket connection.
 
-## Optional parameter
+## Optional constructor parameter
 
 You can specify your own session store key
 
@@ -90,9 +90,13 @@ new SessionSockets(io, sessionStore, cookieParser, 'yourOwnSessionStoreKey');
 
 It defaults to 'connect.sid' (which is the default for both connect and express).
 
-## Cookie lookup
+## Cookie lookup precedence
 
-When looking up for the cookie in a socket.handshake, SessionSockets will take precedence on the following order: secureCookies, signedCookies, cookies.
+When looking up for the cookie in a socket.handshake, SessionSockets will take precedence on the following order:
+
+1. secureCookies
+2. signedCookies
+3. cookies
 
 ## Troubleshooting
 
