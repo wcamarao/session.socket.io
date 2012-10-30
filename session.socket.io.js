@@ -4,7 +4,7 @@ module.exports = function(io, sessionStore, cookieParser, key) {
   this.on = function(event, callback) {
     io.sockets.on(event, function (socket) {
       cookieParser(socket.handshake, {}, function (parseErr) {
-        sessionStore.get(findCookie(socket.handshake), function (storeErr, session) {
+        sessionStore.load(findCookie(socket.handshake), function (storeErr, session) {
           var err = resolve(parseErr, storeErr, session);
           callback(err, socket, session);
         });
