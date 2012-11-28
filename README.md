@@ -27,6 +27,14 @@ sessionSockets.on('connection', function (err, socket, session) {
 });
 ```
 
+## Namespacing
+
+```js
+sessionSockets.of('/chat').on('connection', function (err, socket, session) {
+  //the socket here will address messages only to the /chat namespace
+});
+```
+
 ## A more detailed example
 
 ```js
