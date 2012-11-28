@@ -1,8 +1,20 @@
 module.exports = function(io, sessionStore, cookieParser, key) {
   key = key || 'connect.sid';
 
+  this.of = function(namespace) {
+    return {
+      on: function(event, callback) {
+        return bind(event, callback, io.of(namespace));
+      }
+    };
+  };
+
   this.on = function(event, callback) {
-    io.sockets.on(event, function (socket) {
+    return bind(event, callback, io.sockets);
+  };
+
+  function bind(event, callback, namespace) {
+    namespace.on(event, function (socket) {
       cookieParser(socket.handshake, {}, function (parseErr) {
         sessionStore.load(findCookie(socket.handshake), function (storeErr, session) {
           var err = resolve(parseErr, storeErr, session);
@@ -10,7 +22,7 @@ module.exports = function(io, sessionStore, cookieParser, key) {
         });
       });
     });
-  };
+  }
 
   function findCookie(handshake) {
     return (handshake.secureCookies && handshake.secureCookies[key])
