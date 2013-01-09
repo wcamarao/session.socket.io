@@ -86,7 +86,7 @@ sessionSockets.on('connection', function (err, socket, session) {
 
 ## Error handling
 
-Note that now you receive 3 parameters in the connection callback (err, socket, session). The first will be an error (if an error has occured) from either the cookie parser (when trying to parse the cookie) or the session store (when trying to lookup the session by key); the second will _always be the socket as provided by socket.io_; and the third (if no error has ocurred) will be the corresponding user session for that socket connection.
+Note that now you receive 3 parameters in the connection callback (err, socket, session). The first will be an error object (if an error has occured) from either the cookie parser (when trying to parse the cookie) or the session store (when trying to lookup the session by key); the second will _always be the socket as provided by socket.io_; and the third (if no error has ocurred) will be the corresponding user session for that socket connection.
 
 ## Optional constructor parameter
 
