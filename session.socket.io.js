@@ -32,7 +32,7 @@ module.exports = function(io, sessionStore, cookieParser, key) {
 
   function resolve(parseErr, storeErr, session) {
     if (parseErr) return parseErr;
-    if (!storeErr && !session) return { error: 'could not look up session by key: '+key };
+    if (!storeErr && !session) return new Error ('could not look up session by key: ' + key);
     return storeErr;
   }
 };
