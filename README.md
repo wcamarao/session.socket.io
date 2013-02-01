@@ -5,10 +5,6 @@ This tiny node module aims to simplify your socket.io application when using htt
 
 It's written and tested using express 3.0.0rc4, connect 2.4.5 and socket.io 0.9.10.
 
-## Installation
-
-    $ npm install session.socket.io
-
 ## Quick Start
 
 Import the module and initialize it providing the required parameters
@@ -27,6 +23,25 @@ sessionSockets.on('connection', function (err, socket, session) {
 });
 ```
 
+## Running the example
+
+    $ cd example
+    $ npm install
+    $ node server.js
+    
+    Open http://localhost:3000 on a browser
+
+## Saving values into the session
+
+```js
+sessionSockets.on('connection', function (err, socket, session) {
+  session.foo = 'bar';
+  //at this point the value is not yet saved into the session
+  session.save();
+  //now you can read session.foo from your express routes or connect middlewares
+});
+```
+
 ## Namespacing
 
 ```js
@@ -34,6 +49,36 @@ sessionSockets.of('/chat').on('connection', function (err, socket, session) {
   //the socket here will address messages only to the /chat namespace
 });
 ```
+
+## Error handling
+
+Note that now you receive 3 parameters in the connection callback (err, socket, session). The first will be an error object (if an error has occured) from either the cookie parser (when trying to parse the cookie) or the session store (when trying to lookup the session by key); the second will _always be the socket as provided by socket.io_; and the third (if no error has ocurred) will be the corresponding user session for that socket connection.
+
+## Troubleshooting
+
+The cookieParser doesn't need to be the same reference, you can create another instance somewhere else, but it _should_ take the same 'secret', otherwise the cookie id won't be decoded, therefore the session data won't be retrieved.
+
+The sessionStore _must_ be the same instance. It's quite obvious why.
+
+You can always debug the cookies and session data from any socket.handshake. The socket is the same _as provided by socket.io_ and contains all of that information.
+
+## Cookie lookup precedence
+
+When looking up for the cookie in a socket.handshake, SessionSockets will take precedence on the following order:
+
+1. secureCookies
+2. signedCookies
+3. cookies
+
+## Optional constructor parameter
+
+You can specify your own session store key
+
+```js
+new SessionSockets(io, sessionStore, cookieParser, 'yourOwnSessionStoreKey');
+```
+
+It defaults to 'connect.sid' (which is default for both connect and express).
 
 ## A more detailed example
 
@@ -83,36 +128,6 @@ sessionSockets.on('connection', function (err, socket, session) {
   //and you can still use your io object
 });
 ```
-
-## Error handling
-
-Note that now you receive 3 parameters in the connection callback (err, socket, session). The first will be an error object (if an error has occured) from either the cookie parser (when trying to parse the cookie) or the session store (when trying to lookup the session by key); the second will _always be the socket as provided by socket.io_; and the third (if no error has ocurred) will be the corresponding user session for that socket connection.
-
-## Optional constructor parameter
-
-You can specify your own session store key
-
-```js
-new SessionSockets(io, sessionStore, cookieParser, 'yourOwnSessionStoreKey');
-```
-
-It defaults to 'connect.sid' (which is the default for both connect and express).
-
-## Cookie lookup precedence
-
-When looking up for the cookie in a socket.handshake, SessionSockets will take precedence on the following order:
-
-1. secureCookies
-2. signedCookies
-3. cookies
-
-## Troubleshooting
-
-The cookieParser doesn't need to be the same reference, you can create another instance somewhere else, but it _should_ take the same 'secret', otherwise the cookie id won't be decoded, therefore the session data won't be retrieved.
-
-The sessionStore _must_ be the same instance. It's quite obvious why.
-
-You can always debug the cookies and session data from any socket.handshake. The socket is the same _as provided by socket.io_ and contains all of that information.
 
 ## License
 
