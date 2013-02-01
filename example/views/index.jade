@@ -1,0 +1,42 @@
+doctype 5
+
+html
+  head
+    title SessionSockets usage example
+    script(type='text/javascript', src='/socket.io/socket.io.js')
+
+    style(type='text/css')
+      body {
+        padding: 30px 50px;
+      }
+
+      #t {
+        display: block;
+        margin-bottom: 15px;
+        outline: none;
+        width: 700px;
+        height: 100px;
+      }
+
+      #foo {
+        width: 200px;
+      }
+
+  body
+    h1 SessionSockets usage example
+    p='You should see below your session hash with "bar" as initial value for the "foo" key'
+
+    textarea#t(readonly='1')
+    input#foo(placeholder='now type in a new value for foo')
+    span=' then you should see foo value updated'
+
+    script(type='text/javascript')
+      var socket = io.connect();
+
+      socket.on('session', function (session) {
+        document.getElementById('t').value = JSON.stringify(session);
+      });
+
+      document.getElementById('foo').addEventListener('keyup', function () {
+        socket.emit('foo', this.value);
+      });
