@@ -1,4 +1,4 @@
-## Update by Aust
+## Update by AustP
 
 I added the getSession function because I was looping over all the connected sockets,
 and I needed a way to access session data at that point.
