@@ -6,9 +6,13 @@ and I needed a way to access session data at that point.
 var SessionSockets = require('session.socket.io');
 var ssockets = new SessionSockets(io, sessionStore, cookieParser);
 
-io.sockets.clients().forEach(function(){
-    ssockets.getSession(_socket, function(err, _socket, _session){
-      _socket.emit('name', 'Your name is ' + _session.name);
+ssockets.on('connection', function(err, socket, session){
+    socket.on('display all names', function(){
+        io.sockets.clients().forEach(function(_socket){
+            ssockets.getSession(_socket, function(err, _socket, _session){
+              _socket.emit('name', 'Your name is ' + _session.name);
+            });
+        });
     });
 });
 ```
