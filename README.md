@@ -1,5 +1,20 @@
+## Update by Aust
+
+I added the getSession function because I was looping over all the connected sockets,
+and I needed a way to access session data at that point.
+```js
+var SessionSockets = require('session.socket.io');
+var ssockets = new SessionSockets(io, sessionStore, cookieParser);
+
+io.sockets.clients().forEach(function(){
+    ssockets.getSession(_socket, function(err, _socket, _session){
+      _socket.emit('name', 'Your name is ' + _session.name);
+    });
+});
+```
 session.socket.io (SessionSockets)
 ==================================
+
 
 This tiny node module aims to simplify your socket.io application when using http sessions from express or connect middlewares. It has no dependencies and can be initialized using any session store and cookie parser compatible with express or connect.
 
