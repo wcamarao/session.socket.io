@@ -10,22 +10,24 @@ module.exports = function(io, sessionStore, cookieParser, key) {
   };
 
   this.on = function(event, callback) {
-    return bind(event, callback, io.sockets);
+    return bind.call(this, event, callback, io.sockets);
+  };
+
+  this.getSession = function(socket, callback) {
+    cookieParser(socket.handshake, {}, function (parseErr) {
+      sessionStore.load(findCookie(socket.handshake), function (storeErr, session) {
+        var err = resolve(parseErr, storeErr, session);
+        callback(err, session);
+      });
+    });
   };
 
   function bind(event, callback, namespace) {
     namespace.on(event, function (socket) {
-      getSession(socket, callback);
-    });
-  }
-  
-  var getSession = this.getSession = function(socket, callback){
-    cookieParser(socket.handshake, {}, function(parseError){
-      sessionStore.load(findCookie(socket.handshake), function(storeErr, session){
-        var err = resolve(parseErr, storeErr, session);
+      this.getSession(socket, function (err, session) {
         callback(err, socket, session);
       });
-    });
+    }.bind(this));
   }
 
   function findCookie(handshake) {

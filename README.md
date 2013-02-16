@@ -1,24 +1,5 @@
-## Update by AustP
-
-I added the getSession function because I was looping over all the connected sockets,
-and I needed a way to access session data at that point.
-```js
-var SessionSockets = require('session.socket.io');
-var ssockets = new SessionSockets(io, sessionStore, cookieParser);
-
-ssockets.on('connection', function(err, socket, session){
-    socket.on('display all names', function(){
-        io.sockets.clients().forEach(function(_socket){
-            ssockets.getSession(_socket, function(err, _socket, _session){
-              _socket.emit('name', 'Your name is ' + _session.name);
-            });
-        });
-    });
-});
-```
 session.socket.io (SessionSockets)
 ==================================
-
 
 This tiny node module aims to simplify your socket.io application when using http sessions from express or connect middlewares. It has no dependencies and can be initialized using any session store and cookie parser compatible with express or connect.
 
@@ -47,8 +28,8 @@ sessionSockets.on('connection', function (err, socket, session) {
     $ cd example
     $ npm install
     $ node server.js
-    
-    Open http://localhost:3000 on a browser
+
+    Visit http://localhost:3000
 
 ## Saving values into the session
 
@@ -66,6 +47,17 @@ sessionSockets.on('connection', function (err, socket, session) {
 ```js
 sessionSockets.of('/chat').on('connection', function (err, socket, session) {
   //the socket here will address messages only to the /chat namespace
+});
+```
+
+## Get session for a client
+
+```js
+io.sockets.clients().forEach(function (socket) {
+  // so far we have access only to client sockets
+  sessionSockets.getSession(socket, function (err, session) {
+    // getSession gives you an error object or the session for a given socket
+  });
 });
 ```
 
@@ -89,7 +81,7 @@ When looking up for the cookie in a socket.handshake, SessionSockets will take p
 2. signedCookies
 3. cookies
 
-## Optional constructor parameter
+## Specifying a session store key
 
 You can specify your own session store key
 
