@@ -15,11 +15,15 @@ module.exports = function(io, sessionStore, cookieParser, key) {
 
   function bind(event, callback, namespace) {
     namespace.on(event, function (socket) {
-      cookieParser(socket.handshake, {}, function (parseErr) {
-        sessionStore.load(findCookie(socket.handshake), function (storeErr, session) {
-          var err = resolve(parseErr, storeErr, session);
-          callback(err, socket, session);
-        });
+      getSession(socket, callback);
+    });
+  }
+  
+  var getSession = this.getSession = function(socket, callback){
+    cookieParser(socket.handshake, {}, function(parseError){
+      sessionStore.load(findCookie(socket.handshake), function(storeErr, session){
+        var err = resolve(parseErr, storeErr, session);
+        callback(err, socket, session);
       });
     });
   }
