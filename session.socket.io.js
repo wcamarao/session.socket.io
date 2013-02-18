@@ -22,12 +22,13 @@ module.exports = function(io, sessionStore, cookieParser, key) {
     });
   };
 
+  var self = this;
   function bind(event, callback, namespace) {
     namespace.on(event, function (socket) {
-      this.getSession(socket, function (err, session) {
+      self.getSession(socket, function (err, session) {
         callback(err, socket, session);
       });
-    }.bind(this));
+    });
   }
 
   function findCookie(handshake) {
