@@ -4,8 +4,8 @@ module.exports = function(io, sessionStore, cookieParser, key) {
   this.of = function(namespace) {
     return {
       on: function(event, callback) {
-        return bind(event, callback, io.of(namespace));
-      }
+        return bind.call(this, event, callback, io.of(namespace));
+      }.bind(this)
     };
   };
 
