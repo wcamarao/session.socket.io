@@ -1,4 +1,4 @@
-session.socket.io (SessionSockets)
+session.socket.io (SessionSockets) [![Build Status](https://api.travis-ci.org/functioncallback/session.socket.io.png)](http://travis-ci.org/functioncallback/session.socket.io)
 ==================================
 
 This tiny node module aims to simplify your socket.io application when using http sessions from express or connect middlewares. It has no dependencies and can be initialized using any session store and cookie parser compatible with express or connect.
@@ -30,6 +30,11 @@ sessionSockets.on('connection', function (err, socket, session) {
     $ node server.js
 
     Visit http://localhost:3000
+
+## Running the spec
+
+    $ npm install
+    $ make spec
 
 ## Saving values into the session
 
