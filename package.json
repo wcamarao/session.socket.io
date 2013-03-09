@@ -21,7 +21,10 @@
   },
 
   "dependencies" : {},
-  "devDependencies": {},
+  "devDependencies": {
+    "expect.js": "0.x",
+    "mocha": "1.x"
+  },
 
   "main": "./session.socket.io.js"
 }

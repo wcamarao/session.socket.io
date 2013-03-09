@@ -1,4 +1,6 @@
-module.exports = function(io, sessionStore, cookieParser, key) {
+module.exports = SessionSockets;
+
+function SessionSockets(io, sessionStore, cookieParser, key) {
   key = key || 'connect.sid';
 
   this.of = function(namespace) {
@@ -13,6 +15,14 @@ module.exports = function(io, sessionStore, cookieParser, key) {
     return bind.call(this, event, callback, io.sockets);
   };
 
+  function bind(event, callback, namespace) {
+    namespace.on(event, function (socket) {
+      this.getSession(socket, function (err, session) {
+        callback(err, socket, session);
+      });
+    }.bind(this));
+  }
+
   this.getSession = function(socket, callback) {
     cookieParser(socket.handshake, {}, function (parseErr) {
       sessionStore.load(findCookie(socket.handshake), function (storeErr, session) {
@@ -22,23 +32,16 @@ module.exports = function(io, sessionStore, cookieParser, key) {
     });
   };
 
-  function bind(event, callback, namespace) {
-    namespace.on(event, function (socket) {
-      this.getSession(socket, function (err, session) {
-        callback(err, socket, session);
-      });
-    }.bind(this));
-  }
-
   function findCookie(handshake) {
-    return (handshake.secureCookies && handshake.secureCookies[key])
-        || (handshake.signedCookies && handshake.signedCookies[key])
-        || (handshake.cookies && handshake.cookies[key]);
+    if (handshake) return (handshake.secureCookies && handshake.secureCookies[key])
+                       || (handshake.signedCookies && handshake.signedCookies[key])
+                       || (handshake.cookies && handshake.cookies[key]);
   }
 
   function resolve(parseErr, storeErr, session) {
     if (parseErr) return parseErr;
-    if (!storeErr && !session) return new Error ('could not look up session by key: ' + key);
-    return storeErr;
+    if (storeErr) return storeErr;
+    if (!session) return new Error('Could not lookup session by key: ' + key);
+    return null;
   }
-};
+}
