@@ -1,2 +1,5 @@
 language: javascript
+before_install:
+  - npm install
+  - npm update
 script: make spec
