@@ -33,7 +33,7 @@ function done() {
   var elapsed = process.hrtime(startTime);
   var time = elapsed[0] + elapsed[1] / 1e9;
   var opcount = count / time;
-  console.log('avergae: ', Math.round(opcount), ' | time: ', time);
+  console.log('op/s: ', Math.round(opcount), ' | time: ', time);
 }
 
 if (process.argv[2] === 'session') {

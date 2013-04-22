@@ -3,26 +3,26 @@ module.exports = SessionSockets;
 function SessionSockets(io, sessionStore, cookieParser, key) {
   key = key || 'connect.sid';
 
-  var self = this;
-
   this.of = function(namespace) {
     return {
       on: function(event, callback) {
-        return bind.call(self, event, callback, io.of(namespace));
+        return bind(event, callback, io.of(namespace));
       }
     };
   };
 
   this.on = function(event, callback) {
-    return bind.call(this, event, callback, io.sockets);
+    return bind(event, callback, io.sockets);
   };
 
+  var self = this;
+  
   function bind(event, callback, namespace) {
-    namespace.on(event, function (socket) {
-      this.getSession(socket, function (err, session) {
+    namespace.on(event, function(socket) {
+      self.getSession(socket, function (err, session) {
         callback(err, socket, session);
       });
-    }.bind(this));
+    });
   }
 
   this.getSession = function(socket, callback) {
