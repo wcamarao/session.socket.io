@@ -129,14 +129,14 @@ var server = http.createServer(app)
   , io = require('socket.io').listen(server);
 ```
 
-Now instead of listening to io.sockets.on('connection', ...) you will inject it together with the sessionStore and cookieParser
+Inject the original io module with the sessionStore and cookieParser
 
 ```js
 var SessionSockets = require('session.socket.io')
   , sessionSockets = new SessionSockets(io, sessionStore, cookieParser);
 ```
 
-Which will wrap it up and get you what matters: the session for that socket
+Now instead of io.sockets.on('connection', ...) you will do sessionSockets, giving you the session for that socket
 
 ```js
 sessionSockets.on('connection', function (err, socket, session) {
