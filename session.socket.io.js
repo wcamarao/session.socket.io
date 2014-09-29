@@ -4,6 +4,8 @@ function SessionSockets(io, sessionStore, cookieParser, key) {
   key = typeof key === 'undefined' ? 'connect.sid' : key;
   var sessionSockets = this;
 
+  this.io = io;
+  
   this.on = function(event, callback) {
     return bind(event, callback, io.sockets);
   };
