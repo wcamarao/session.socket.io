@@ -10,15 +10,17 @@ var sessionStore = {
     fn(undefined, {test: 'hi'})
   }
 }
+
 var cookieParser = function(handshake, idk, fn) {
   fn();
 }
+
 var stubsocket = {
   handshake: {
     secureCookies: '123'
   }
 }
-//
+
 var s = new SessionSocket(io, sessionStore, cookieParser, 'key');
 var type, startTime, d = 0;
 

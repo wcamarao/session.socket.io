@@ -7,7 +7,12 @@ describe('SessionSockets', function () {
   this.timeout(10);
 
   beforeEach(function () {
-    this.sessionSockets = new SessionSockets(io(), sessionStore(), cookieParser);
+    this.socketIo = io();
+    this.sessionSockets = new SessionSockets(this.socketIo, sessionStore(), cookieParser);
+  });
+
+  it('exposes a reference to the underlying socket.io', function () {
+    expect(this.sessionSockets.io).to.be(this.socketIo);
   });
 
   it('gets the corresponding session for a given socket client', function (done) {
