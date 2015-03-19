@@ -126,7 +126,7 @@ Both will be used by express - so far everything's familiar. Note that you need 
 app.configure(function () {
   //hiding other express configuration
   app.use(cookieParser);
-  app.use(express.session({ store: sessionStore }));
+  app.use(express.session({ secret: 'your secret sauce', store: sessionStore }));
 });
 ```
 

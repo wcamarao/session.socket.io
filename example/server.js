@@ -14,7 +14,7 @@ app.configure(function () {
   app.use(express.bodyParser());
   app.use(express.methodOverride());
   app.use(cookieParser);
-  app.use(express.session({ store: sessionStore }));
+  app.use(express.session({ secret: 'your secret sauce', store: sessionStore }));
   app.use(app.router);
 });
 
