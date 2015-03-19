@@ -4,7 +4,7 @@ var path = require('path')
   , jonnySocket = stub({ foo: 'bar' });
 
 describe('SessionSockets', function () {
-  this.timeout(10);
+  this.timeout(3000);
 
   beforeEach(function () {
     this.socketIo = io();
