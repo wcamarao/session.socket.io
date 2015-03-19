@@ -1,7 +1,7 @@
 {
   "name": "example",
   "version": "0.1.0",
-  "description": "SessionSockets usage example",
+  "description": "SessionSockets usage example with express 3",
   "author": "Wagner Camarao <functioncallback@gmail.com>",
 
   "engines": {
