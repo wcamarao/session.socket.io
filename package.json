@@ -1,7 +1,7 @@
 {
   "name": "session.socket.io",
-  "version": "0.1.6",
-  "description": "Connect middleware sessions in socket.io",
+  "version": "0.2.0",
+  "description": "Integrate Connect/Express (v3/v4) middleware sessions with socket.io",
   "author": "Wagner Camarao <functioncallback@gmail.com>",
 
   "contributors": [ 

@@ -3,9 +3,8 @@ module.exports = SessionSockets;
 function SessionSockets(io, sessionStore, cookieParser, key) {
   key = typeof key === 'undefined' ? 'connect.sid' : key;
   var sessionSockets = this;
-
   this.io = io;
-  
+
   this.on = function(event, callback) {
     return bind(event, callback, io.sockets);
   };
@@ -20,7 +19,8 @@ function SessionSockets(io, sessionStore, cookieParser, key) {
 
   this.getSession = function(socket, callback) {
     cookieParser(socket.handshake, {}, function (parseErr) {
-      sessionStore.load(findCookie(socket.handshake), function (storeErr, session) {
+      var sessionLookupMethod = sessionStore.load || sessionStore.get;
+      sessionLookupMethod.call(sessionStore, findCookie(socket.handshake), function (storeErr, session) {
         var err = resolveErr(parseErr, storeErr, session);
         callback(err, session);
       });

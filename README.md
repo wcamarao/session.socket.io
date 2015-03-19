@@ -1,9 +1,15 @@
-session.socket.io (SessionSockets) [![Build Status](https://api.travis-ci.org/functioncallback/session.socket.io.png)](http://travis-ci.org/functioncallback/session.socket.io)
+session.socket.io (SessionSockets) [![Build Status](https://api.travis-ci.org/wcamarao/session.socket.io.png)](http://travis-ci.org/wcamarao/session.socket.io)
 ==================================
 
 This tiny node module simplifies your web sockets app when using http sessions from express or connect middlewares. It has no dependencies and can be initialized using any session store and cookie parser compatible with express or connect.
 
-It's written and tested using express 3.0.0rc4, connect 2.4.5 and socket.io 0.9.10.
+It was written in 2013 and tested using express 3.0.0rc4, connect 2.4.5 and socket.io 0.9.10.
+
+## March 2015 Update
+
+Added support for express 4, tested with socket.io 1.3.5.
+
+If you're using express4, follow the same steps below under "Running the example" but stepping into the folder example-express4.
 
 ## Quick Start
 
@@ -97,6 +103,8 @@ new SessionSockets(io, sessionStore, cookieParser, 'yourOwnSessionStoreKey');
 It defaults to 'connect.sid' (which is default for both connect and express).
 
 ## A step by step example
+
+This example is for express 3. If you're using express 4, follow the same steps above under "Running the example" but stepping into the folder example-express4.
 
 ```js
 var http = require('http')
