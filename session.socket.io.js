@@ -22,7 +22,7 @@ function SessionSockets(io, sessionStore, cookieParser, key) {
       var sessionLookupMethod = sessionStore.load || sessionStore.get;
       sessionLookupMethod.call(sessionStore, findCookie(socket.handshake), function (storeErr, session) {
         var err = resolveErr(parseErr, storeErr, session);
-        callback(err, session);
+        callback(err, session, socket);
       });
     });
   };
