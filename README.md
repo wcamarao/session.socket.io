@@ -3,13 +3,11 @@ session.socket.io (SessionSockets) [![Build Status](https://api.travis-ci.org/wc
 
 This tiny node module simplifies your web sockets app when using http sessions from express or connect middlewares. It has no dependencies and can be initialized using any session store and cookie parser compatible with express or connect.
 
-It was written in 2013 and tested using express 3.0.0rc4, connect 2.4.5 and socket.io 0.9.10.
+It's compatible with express 3, connect 2 and socket.io 0.9.
 
-## March 2015 Update
+## 2015 Update
 
-Added support for express 4, tested with socket.io 1.3.5.
-
-If you're using express4, follow the same steps below under "Running the example" but stepping into the folder example-express4.
+SessionSockets will be deprecated once socket.io 0.9 is deprecated. If you're using socket.io >= 1.0, it supports middleware, and there's a [simpler module](https://github.com/xpepermint/socket.io-express-session) for that.
 
 ## Quick Start
 
