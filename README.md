@@ -155,7 +155,7 @@ sessionSockets.on('connection', function (err, socket, session) {
 
   (The MIT License)
 
-  Copyright (c) 2012 Wagner Camarao &lt;functioncallback@gmail.com&gt;
+  Copyright (c) 2012 Wagner Camarao &lt;wagner@camarao.io&gt;
 
   Permission is hereby granted, free of charge, to any person obtaining
   a copy of this software and associated documentation files (the "Software"),
