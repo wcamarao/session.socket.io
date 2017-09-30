@@ -3,7 +3,8 @@ session.socket.io (SessionSockets) [![Build Status](https://api.travis-ci.org/wc
 
 This tiny module simplifies the usage of socket.io with http sessions from express or connect middlewares. It has no dependencies and can be initialized using any session store and cookie parser compatible with express or connect.
 
-Compatible with:
+Compatibility:
+
 * Express 3
 * Express 4
 * Connect 2
@@ -76,9 +77,9 @@ io.sockets.clients().forEach(function (socket) {
 
 Note that now you receive 3 parameters in the connection callback: (err, socket, session).
 
-* The first parameter will be an error object if an error has occured, otherwise null. Errors may originate from either the cookie parser when trying to parse the cookie, or from the session store when trying to lookup the session by key.
+* The first parameter will be present if an error has occured, otherwise null. Errors may originate from the cookie parser when trying to parse the cookie, or from the session store when trying to lookup the session by key.
 * The second parameter will _always be the socket as provided by socket.io_.
-* The third parameter will be the corresponding user session for that socket connection if no error has ocurred, otherwise null.
+* The third parameter will be the corresponding user session for that socket connection if an error has not ocurred, otherwise null.
 
 ## Troubleshooting
 
