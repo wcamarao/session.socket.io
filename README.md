@@ -159,7 +159,7 @@ sessionSockets.on('connection', function (err, socket, session) {
 
 ## License
 
-  (The MIT License)
+  The MIT License
 
   Copyright (c) 2012 Wagner Camarao &lt;wagner@camarao.io&gt;
 
