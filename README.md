@@ -3,18 +3,18 @@ session.socket.io (SessionSockets) [![Build Status](https://api.travis-ci.org/wc
 
 This tiny module simplifies the usage of socket.io with http sessions from express or connect middlewares. It has no dependencies and can be initialized using any session store and cookie parser compatible with express or connect.
 
-This module is compatible with express 3 and 4, connect 2 and socket.io 0.9. If you're using socket.io >= 1.0, this module is not required because socket.io 1.0 has built-in support for middlewares.
+This module is compatible with express 3 and 4, connect 2 and socket.io 0.9. If you're using socket.io 1.0 or newer, this module is not required because socket.io 1.0 has built-in support for middlewares.
 
 ## Quick Start
 
 Import the module and initialize it providing the required parameters
 
 ```js
-var SessionSockets = require('session.socket.io')
-  , sessionSockets = new SessionSockets(io, sessionStore, cookieParser);
+var SessionSockets = require('session.socket.io'),
+    sessionSockets = new SessionSockets(io, sessionStore, cookieParser);
 ```
 
-Listen to socket connections and get the socket _as provided by socket.io_, together with either the session or an error
+Listen to socket connections and get the socket _as provided by socket.io_ with either an error or the session
 
 ```js
 sessionSockets.on('connection', function (err, socket, session) {
@@ -66,17 +66,21 @@ io.sockets.clients().forEach(function (socket) {
 });
 ```
 
-## Error handling
+## Callback parameters and error handling
 
-Note that now you receive 3 parameters in the connection callback (err, socket, session). The first will be an error object (if an error has occured) from either the cookie parser (when trying to parse the cookie) or the session store (when trying to lookup the session by key); the second will _always be the socket as provided by socket.io_; and the third (if no error has ocurred) will be the corresponding user session for that socket connection.
+Note that now you receive 3 parameters in the connection callback: (err, socket, session).
+
+* The first parameter will be an error object if an error has occured, otherwise null. Errors may originate from either the cookie parser when trying to parse the cookie, or from the session store when trying to lookup the session by key.
+* The second parameter will _always be the socket as provided by socket.io_.
+* The third parameter will be the corresponding user session for that socket connection if no error has ocurred, otherwise null.
 
 ## Troubleshooting
 
 The cookieParser doesn't need to be the same reference, you can create another instance somewhere else, but it _should_ take the same 'secret', otherwise the cookie id won't be decoded, therefore the session data won't be retrieved.
 
-The sessionStore _must_ be the same instance. It's quite obvious why.
+The sessionStore _must_ be the same instance.
 
-You can always debug the cookies and session data from any socket.handshake. The socket is the same _as provided by socket.io_.
+You can always debug cookies and session data from any socket.handshake. The socket is the same _as provided by socket.io_.
 
 ## Cookie lookup precedence
 
@@ -88,33 +92,33 @@ When looking up for the cookie in a socket.handshake, SessionSockets will take p
 
 ## Custom session store key
 
-You can specify your own session store key
+You can specify a custom session store key
 
 ```js
-new SessionSockets(io, sessionStore, cookieParser, 'yourOwnSessionStoreKey');
+new SessionSockets(io, sessionStore, cookieParser, 'customSessionStoreKey');
 ```
 
 It defaults to 'connect.sid' (which is default for both connect and express).
 
 ## A step by step example
 
-This is for express 3. If you're using express 4, follow the steps above under "Running the example" but stepping into the [example-express4](https://github.com/wcamarao/session.socket.io/tree/master/example-express4) directory.
+This is for express 3. If you're using express 4, follow the steps above under "Running the example" but in the [example-express4](https://github.com/wcamarao/session.socket.io/tree/master/example-express4) directory.
 
 ```js
-var http = require('http')
-  , connect = require('connect')
-  , express = require('express')
-  , app = express();
+var http = require('http'),
+    connect = require('connect'),
+    express = require('express'),
+    app = express();
 ```
 
 Below are the two main references you will need to keep
 
 ```js
-var cookieParser = express.cookieParser('your secret sauce')
-  , sessionStore = new connect.middleware.session.MemoryStore();
+var cookieParser = express.cookieParser('your secret sauce'),
+    sessionStore = new connect.middleware.session.MemoryStore();
 ```
 
-Both will be used by express - so far everything's familiar. Note that you need to provide sessionStore when using express.session(). Here you could use Redis or any other store as well.
+Both will be used by express and so far everything's familiar. Note that you need to provide sessionStore when using express.session(). Here you could use Redis or any other store as well.
 
 ```js
 app.configure(function () {
@@ -124,21 +128,21 @@ app.configure(function () {
 });
 ```
 
-Then you create the server and bind socket.io to it (nothing new here)
+Next, you create the server and bind socket.io to it (nothing new here)
 
 ```js
-var server = http.createServer(app)
-  , io = require('socket.io').listen(server);
+var server = http.createServer(app),
+    io = require('socket.io').listen(server);
 ```
 
 Inject the original io module with the sessionStore and cookieParser
 
 ```js
-var SessionSockets = require('session.socket.io')
-  , sessionSockets = new SessionSockets(io, sessionStore, cookieParser);
+var SessionSockets = require('session.socket.io'),
+    sessionSockets = new SessionSockets(io, sessionStore, cookieParser);
 ```
 
-Now instead of io.sockets.on('connection', ...) you will do sessionSockets, giving you the session for that socket
+Now instead of io.sockets.on('connection', ...) you will use sessionSockets, giving you the session for that socket
 
 ```js
 sessionSockets.on('connection', function (err, socket, session) {
