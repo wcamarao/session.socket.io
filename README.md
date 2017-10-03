@@ -10,7 +10,7 @@ Compatibility:
 * Connect 2
 * Socket.io 0.9
 
-If you're using socket.io 1.0 or newer, this module is not required because socket.io 1.0 has built-in support for middlewares.
+If you're using socket.io 1.0 or newer, this is not required because socket.io 1.0 has built-in support for middlewares.
 
 ## Quick Start
 
