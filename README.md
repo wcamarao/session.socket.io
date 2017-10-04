@@ -78,7 +78,7 @@ io.sockets.clients().forEach(function (socket) {
 Note that now you receive 3 parameters in the connection callback: (err, socket, session).
 
 * The first parameter will be present if an error has occured, otherwise null. Errors may originate from the cookie parser when trying to parse the cookie, or from the session store when trying to lookup the session by key.
-* The second parameter will _always be the socket as provided by socket.io_.
+* The second parameter will be the socket _as provided_ by socket.io.
 * The third parameter will be the corresponding user session for that socket connection if an error has not ocurred, otherwise null.
 
 ## Troubleshooting
@@ -87,7 +87,7 @@ The cookieParser doesn't need to be the same reference, you can create another i
 
 The sessionStore _must_ be the same instance.
 
-You can always debug cookies and session data from any socket.handshake. The socket is the same _as provided by socket.io_.
+You can always debug cookies and session data from any socket.handshake. The socket is the same _as provided_ by socket.io.
 
 ## Cookie lookup precedence
 
